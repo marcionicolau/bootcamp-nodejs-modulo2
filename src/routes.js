@@ -3,7 +3,7 @@ const express = require('express')
 const routes = express.Router()
 
 routes.get('/', (req, res) => {
-  res.send('Olá')
+  res.render('auth/signup')
 })
 
 module.exports = routes

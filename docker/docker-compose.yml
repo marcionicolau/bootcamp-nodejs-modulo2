@@ -1,0 +1,46 @@
+# Use postgres/example user/password credentials
+version: "3.1"
+
+networks:
+  redis-network:
+    driver: bridge
+
+services:
+  db:
+    image: postgres:11-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
+      POSTGRES_DB: gonodemodulo2
+
+  adminer:
+    image: adminer:4.7.1
+    restart: always
+    ports:
+      - 8080:8080
+
+  redis:
+    image: redis:5-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server
+
+    networks:
+      redis-network:
+        aliases:
+          - redis-server
+
+  redis-cli2:
+    image: redis:5-alpine
+    depends_on:
+      - redis
+    command: redis-cli -h redis-server
+
+    networks:
+      redis-network:
+        aliases:
+          - redis-cli
